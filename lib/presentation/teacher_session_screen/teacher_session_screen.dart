@@ -735,34 +735,26 @@ class _TeacherSessionScreenState extends State<TeacherSessionScreen>
         },
         child: Scaffold(
           backgroundColor: AppTheme.background,
-          floatingActionButton: (_activeSession != null && !_showReports)
-              ? FloatingActionButton.extended(
-                  onPressed: _isEndingSession ? null : _endSession,
-                  backgroundColor: const Color(0xFFDC2626),
-                  elevation: 6,
-                  icon: _isEndingSession
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Icon(
-                          Icons.stop_circle_rounded,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                  label: Text(
-                    'End Session',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      letterSpacing: 0.2,
+          bottomNavigationBar: (_activeSession != null && !_showReports)
+              ? Container(
+                  padding: EdgeInsets.fromLTRB(
+                    16,
+                    12,
+                    16,
+                    MediaQuery.of(context).padding.bottom > 0
+                        ? MediaQuery.of(context).padding.bottom + 8
+                        : 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppTheme.background.withAlpha(240),
+                    border: Border(
+                      top: BorderSide(
+                        color: AppTheme.shadowLight.withAlpha(25),
+                        width: 1,
+                      ),
                     ),
                   ),
+                  child: _buildEndSessionButton(),
                 )
               : null,
           body: Stack(
@@ -909,7 +901,6 @@ class _TeacherSessionScreenState extends State<TeacherSessionScreen>
                     isSessionActive: _activeSession != null,
                   ),
                   const SizedBox(height: 16),
-                  _buildEndSessionButton(),
                 ] else ...[
                   SessionConfigWidget(
                     classes: _classes,
@@ -1124,10 +1115,10 @@ class _TeacherSessionScreenState extends State<TeacherSessionScreen>
         ],
       ),
       actions: [
-        if (_activeSession != null) ...[
+        if (_activeSession != null)
           Container(
-            margin: const EdgeInsets.only(right: 6),
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            margin: const EdgeInsets.only(right: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: AppTheme.successSoft,
               borderRadius: BorderRadius.circular(8),
@@ -1156,40 +1147,6 @@ class _TeacherSessionScreenState extends State<TeacherSessionScreen>
               ],
             ),
           ),
-          InkWell(
-            onTap: _isEndingSession ? null : _endSession,
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              margin: const EdgeInsets.only(right: 6),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppTheme.errorSoft,
-                borderRadius: BorderRadius.circular(8),
-                border:
-                    Border.all(color: AppTheme.error.withAlpha(80), width: 1),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.stop_circle_rounded,
-                    color: AppTheme.error,
-                    size: 14,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    'End Session',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.error,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
         IconButton(
           onPressed: () {
             setState(() {
